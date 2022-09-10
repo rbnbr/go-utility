@@ -26,7 +26,13 @@ func MakeUniqueStringSlice(oldSlice []string, postfix string) []string {
 }
 
 // FindIndex
-// Returns the index for which the provided predicate evaluates true first
+// Returns the index for which the provided predicate evaluates true first.
+// Returns -1 if it didn't evaluate true at all.
+// Limit specifies the search space for the indices which is [0, limit-1]
+// No bounds check included.
+// Example:
+// var someSlice []string // = ...
+// idx := FindIndex(len(someSlice), func(i int) bool { return someSlice[i] == "Precious" }
 func FindIndex(limit int, predicate func(int) bool) int {
 	for i := 0; i < limit; i++ {
 		if predicate(i) {
@@ -37,13 +43,15 @@ func FindIndex(limit int, predicate func(int) bool) int {
 }
 
 // Contains
-// Returns true, if value is contained in the provided slice, else false
+// Returns true, if value is contained in the provided slice, else false.
+// Similar usage as FindIndex
 func Contains(limit int, predicate func(int) bool) bool {
 	return FindIndex(limit, predicate) != -1
 }
 
 // Count
 // Returns the amount of times the predicate did evaluate true
+// Similar usage as FindIndex
 func Count(limit int, predicate func(int) bool) int {
 	count := 0
 	for i := 0; i < limit; i++ {
