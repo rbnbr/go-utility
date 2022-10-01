@@ -130,4 +130,50 @@ func Equal[T1 any, T2 any](t1 []T1, t2 []T2, predicate func(T1, T2) bool) bool {
 	return true
 }
 
-// TODO: implement remove duplicates
+// UniqueConfigurable
+// Returns a new slice with only elements which do not occur twice using the predicate function to compare equality between two elements.
+// Is configurable to return the first or the last occurrence per element.
+// When chosen last occurrence, then the order is still the same as with first occurrence but the elements has been replaced.
+// Has quadratic runtime due to usage of slice for lookup and not map which allows elements that are non-comparable
+func UniqueConfigurable[T any](slice []T, predicate func(T, T) bool, firstOccurrence bool) []T {
+	unique := make([]T, 0)
+
+	for i := 0; i < len(slice); i++ {
+		if idx := FindIndexGeneric(unique, func(u T) bool {
+			return predicate(slice[i], u)
+		}); idx == -1 {
+			// current element in slice, i.e., slice[i], does not exist in unique slice. -> can be added
+			unique = append(unique, slice[i])
+		} else {
+			// current element in slice, i.e., slice[i], does exist in unique slice
+			if firstOccurrence {
+				// we only keep the first occurrence -> do nothing
+				continue
+			} else {
+				// we keep the last occurrence -> replace element in unique with current element
+				unique[idx] = slice[i]
+			}
+		}
+	}
+
+	return unique
+}
+
+// Unique
+// Shorthand for UniqueFirst(..)
+func Unique[T any](slice []T, predicate func(T, T) bool) []T {
+	return UniqueFirst(slice, predicate)
+}
+
+// UniqueFirst
+// Shorthand for UniqueConfigurable(slice, predicate, true)
+func UniqueFirst[T any](slice []T, predicate func(T, T) bool) []T {
+	return UniqueConfigurable(slice, predicate, true)
+}
+
+// UniqueLast
+// Shorthand for UniqueConfigurable(slice, predicate, false)
+func UniqueLast[T any](slice []T, predicate func(T, T) bool) []T {
+	return UniqueConfigurable(slice, predicate, false)
+}
+

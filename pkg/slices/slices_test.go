@@ -223,3 +223,32 @@ func TestEqual(t *testing.T) {
 		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
+
+// TestUniqueConfigurable
+// Tests UniqueConfigurable and it's variations on float slices.
+func TestUniqueConfigurable(t *testing.T) {
+	testSlice := []float64{1.0, 2.0, 4.0, -1.0, -2.0, 5.0, 1.1, 2.1, 0.0, 1.2}
+	testPredicate := func(a, b float64) bool {
+		return int(a) == int(b) // rounding down to be able to differentiate between 'same' elements
+	}
+
+	// unique (first occurrence)
+	expectedResult := []float64{1.0, 2.0, 4.0, -1.0, -2.0, 5.0, 0.0}
+	gotResult := Unique(testSlice, testPredicate)
+
+	if !Equal(gotResult, expectedResult, func(a, b float64) bool {
+		return a == b
+	}) {
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	// unique (last occurrence)
+	expectedResult = []float64{1.2, 2.1, 4.0, -1.0, -2.0, 5.0, 0.0}
+	gotResult = UniqueLast(testSlice, testPredicate)
+
+	if !Equal(gotResult, expectedResult, func(a, b float64) bool {
+		return a == b
+	}) {
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+}
