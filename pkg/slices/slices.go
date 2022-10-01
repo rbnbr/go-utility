@@ -17,12 +17,16 @@ var (
 // has occurred before to '{oldElement}{suffix}{count}', i.e., ["hello", "hello", "hello_"] with suffix "_"
 // will return ["hello", "hello_2", "hello_"]
 // If oldSlice contains elements that already match with regex: ^.*{suffix}[1-9]+$, it will return an error that the provided suffix cannot be used to make unique strings
+//
+//	This check is omitted if suffix is empty. In such case, the result is error-prone.
 func MakeUniqueStringSlice(oldSlice []string, suffix string) ([]string, error) {
-	re := regexp.MustCompile(fmt.Sprintf("^.*%s[1-9]+$", suffix))
-	if idx := FindIndexGeneric(oldSlice, func(s string) bool {
-		return re.MatchString(s)
-	}); idx != -1 {
-		return nil, fmt.Errorf("%w: the provided suffix '%s' cannot be used to create unique strings because the provided slice contains elements which end with such suffix, e.g., '%s'", ErrInvalidArgument, suffix, oldSlice[idx])
+	if suffix != "" {
+		re := regexp.MustCompile(fmt.Sprintf("^.*%s[1-9]+$", suffix))
+		if idx := FindIndexGeneric(oldSlice, func(s string) bool {
+			return re.MatchString(s)
+		}); idx != -1 {
+			return nil, fmt.Errorf("%w: the provided suffix '%s' cannot be used to create unique strings because the provided slice contains elements which end with such suffix, e.g., '%s'", ErrInvalidArgument, suffix, oldSlice[idx])
+		}
 	}
 
 	ret := make([]string, len(oldSlice))
@@ -176,4 +180,3 @@ func UniqueFirst[T any](slice []T, predicate func(T, T) bool) []T {
 func UniqueLast[T any](slice []T, predicate func(T, T) bool) []T {
 	return UniqueConfigurable(slice, predicate, false)
 }
-
