@@ -115,7 +115,7 @@ func CountGeneric[T any](slice []T, predicate func(T) bool) int {
 // Equal
 // Given a predicate for comparison, returns true if the predicate evaluates true on all pairs of elements for the two slices,
 // else false.
-// Slices of same length evaluate to true, even though the one slice is nil while the other slice is an empty actual slice of possibly different type.
+// Two slices of length 0 evaluate to true, even though the one slice is nil while the other slice is an empty actual slice of possibly different type.
 func Equal[T1 any, T2 any](t1 []T1, t2 []T2, predicate func(T1, T2) bool) bool {
 	if len(t1) != len(t2) {
 		return false
@@ -176,4 +176,3 @@ func UniqueFirst[T any](slice []T, predicate func(T, T) bool) []T {
 func UniqueLast[T any](slice []T, predicate func(T, T) bool) []T {
 	return UniqueConfigurable(slice, predicate, false)
 }
-
