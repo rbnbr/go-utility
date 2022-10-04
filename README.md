@@ -1,4 +1,4 @@
 # Go-Utility
 
 This module provides a handful of functions that I use in some other projects.
-No tests have been written and no guarantee on anything is given.
+Only few tests have been written so far, though I'll try to add more from time to time.
