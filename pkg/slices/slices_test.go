@@ -2,6 +2,7 @@ package slices
 
 import (
 	"errors"
+	"strings"
 	"testing"
 )
 
@@ -250,5 +251,33 @@ func TestUniqueConfigurable(t *testing.T) {
 		return a == b
 	}) {
 		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+}
+
+// TestFilter
+// Tests the generic Filter function.
+func TestFilter(t *testing.T) {
+	testSlice := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	testPredicate := func(i int) bool { return i%2 == 0 }
+
+	expectedResult := []int{0, 2, 4, 6, 8}
+	gotResult := Filter(testSlice, testPredicate)
+
+	if !Equal(gotResult, expectedResult, func(a, b int) bool {
+		return a == b
+	}) {
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	testSliceString := []string{"hallo", "hello", "alo", "vera"}
+	testPredicateString := func(s string) bool {
+		return s[0] == 'a' || s[0] == 'v'
+	}
+
+	expectedResultString := []string{"alo", "vera"}
+	gotResultString := Filter(testSliceString, testPredicateString)
+
+	if !Equal(gotResultString, expectedResultString, strings.EqualFold) {
+		t.Errorf(gotExpectedResultFmt, gotResultString, expectedResultString)
 	}
 }

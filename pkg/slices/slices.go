@@ -176,3 +176,18 @@ func UniqueFirst[T any](slice []T, predicate func(T, T) bool) []T {
 func UniqueLast[T any](slice []T, predicate func(T, T) bool) []T {
 	return UniqueConfigurable(slice, predicate, false)
 }
+
+// Filter
+// Returns a new slice t which only contains those elements of the provided slice
+// for which the given predicate function evaluates to true.
+func Filter[T any](slice []T, predicate func(T) bool) []T {
+	ret := make([]T, 0)
+
+	for _, v := range slice {
+		if predicate(v) {
+			ret = append(ret, v)
+		}
+	}
+
+	return ret
+}
