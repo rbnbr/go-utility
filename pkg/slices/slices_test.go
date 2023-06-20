@@ -281,3 +281,36 @@ func TestFilter(t *testing.T) {
 		t.Errorf(gotExpectedResultFmt, gotResultString, expectedResultString)
 	}
 }
+
+// TestMap
+// Tests the generic Map function.
+func TestMap(t *testing.T) {
+	testSlice := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	testMapping := func(i *int) int {
+		return (*i) * 2
+	}
+
+	expectedResult := []int{0, 2, 4, 6, 8, 10, 12, 14, 16, 18}
+	gotResult := Map(testSlice, testMapping)
+
+	if !Equal(gotResult, expectedResult, func(a int, b int) bool {
+		return a == b
+	}) {
+		t.Errorf(gotExpectedErrorFmt, gotResult, expectedResult)
+	}
+
+	testSliceString := []string{"hallo", "hello", "alo", "vera"}
+	testMappingString := func(s *string) int {
+		// count number of letters
+		return len(*s)
+	}
+
+	expectedResultString := []int{5, 5, 3, 4}
+	gotResultString := Map(testSliceString, testMappingString)
+
+	if !Equal(gotResultString, expectedResultString, func(a int, b int) bool {
+		return a == b
+	}) {
+		t.Errorf(gotExpectedErrorFmt, gotResult, expectedResult)
+	}
+}

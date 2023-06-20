@@ -191,3 +191,15 @@ func Filter[T any](slice []T, predicate func(T) bool) []T {
 
 	return ret
 }
+
+// Map
+// Maps a slice to another slice by applying a function 'mapping' to each of its elements.
+func Map[T any, V any](slice []T, mapping func(t *T) V) []V {
+	ret := make([]V, len(slice))
+
+	for i := 0; i < len(slice); i++ {
+		ret[i] = mapping(&slice[i])
+	}
+
+	return ret
+}
