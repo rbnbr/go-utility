@@ -296,7 +296,7 @@ func TestMap(t *testing.T) {
 	if !Equal(gotResult, expectedResult, func(a int, b int) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedErrorFmt, gotResult, expectedResult)
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testSliceString := []string{"hallo", "hello", "alo", "vera"}
@@ -311,6 +311,35 @@ func TestMap(t *testing.T) {
 	if !Equal(gotResultString, expectedResultString, func(a int, b int) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedErrorFmt, gotResult, expectedResult)
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+}
+
+func TestReduce(t *testing.T) {
+	testSlice := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	testReduceFunc := func(i *int, v *int) int {
+		return (*i) + (*v)
+	}
+
+	expectedResult := 45
+	gotResult := Reduce(testSlice, testReduceFunc, 0)
+
+	if gotResult != expectedResult {
+		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	testSliceConcat := [][]int{{0, 1}, {2, 3}, {4, 5, 6}, {7, 8, 9, 10}}
+	testReduceFuncConcat := func(i *[]int, v *[]int) []int {
+		// concat both
+		return append(*v, *i...)
+	}
+
+	expectedResultConcat := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	gotResultConcat := Reduce(testSliceConcat, testReduceFuncConcat, []int{})
+
+	if !Equal(gotResultConcat, expectedResultConcat, func(i int, i2 int) bool {
+		return i == i2
+	}) {
+		t.Errorf(gotExpectedResultFmt, gotResultConcat, expectedResultConcat)
 	}
 }

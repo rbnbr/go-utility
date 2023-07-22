@@ -203,3 +203,16 @@ func Map[T any, V any](slice []T, mapping func(t *T) V) []V {
 
 	return ret
 }
+
+// Reduce
+// My take on implementing the reduce function.
+// It iterates over the provided slice and combines and returns the result of this iteration.
+// See examples for adding all values in an array or for concatenating nested arrays in the TestReduce function.
+// init is the initial aggregate value
+func Reduce[T any, V any](slice []T, reduceFunc func(newValue *T, aggregate *V) V, init V) V {
+	for i := 0; i < len(slice); i++ {
+		init = reduceFunc(&slice[i], &init)
+	}
+
+	return init
+}
