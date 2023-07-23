@@ -343,3 +343,16 @@ func TestReduce(t *testing.T) {
 		t.Errorf(gotExpectedResultFmt, gotResultConcat, expectedResultConcat)
 	}
 }
+
+func TestConcatSlices(t *testing.T) {
+	testSliceConcat := [][]int{{0, 1}, {2, 3}, {4, 5, 6}, {7, 8, 9, 10}}
+
+	expectedResultConcat := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	gotResultConcat := ConcatSlices(testSliceConcat)
+
+	if !Equal(gotResultConcat, expectedResultConcat, func(i int, i2 int) bool {
+		return i == i2
+	}) {
+		t.Errorf(gotExpectedResultFmt, gotResultConcat, expectedResultConcat)
+	}
+}

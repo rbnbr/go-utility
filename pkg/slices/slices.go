@@ -216,3 +216,13 @@ func Reduce[T any, V any](slice []T, reduceFunc func(newValue *T, aggregate *V) 
 
 	return init
 }
+
+// ConcatSlices
+// Provided a slice of slices, concatenate all slices in the provided slice to a single slice.
+// The slices should all be of the same type.
+// e.g., [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2]] -> [1, 2, 3, 4, 1, 2, 3, 4, 1, 2]
+func ConcatSlices[T any](slice [][]T) []T {
+	return Reduce(slice, func(newValue *[]T, aggregate *[]T) []T {
+		return append(*aggregate, *newValue...)
+	}, []T{})
+}
