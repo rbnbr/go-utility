@@ -2,13 +2,9 @@ package slices
 
 import (
 	"errors"
+	"github.com/rbnbr/go-utility/pkg/consts"
 	"strings"
 	"testing"
-)
-
-var (
-	gotExpectedErrorFmt  = "got error: '%v' is not expected error: '%v'"
-	gotExpectedResultFmt = "got result: '%v' is not equal expected result: '%v'"
 )
 
 // TestMakeUniqueStringSlice_success_1
@@ -21,13 +17,13 @@ func TestMakeUniqueStringSlice_success_1(t *testing.T) {
 
 	gotResult, gotError := MakeUniqueStringSlice(testSlice, testSuffix)
 	if !errors.Is(gotError, expectedErr) {
-		t.Errorf(gotExpectedErrorFmt, gotError, expectedErr)
+		t.Errorf(consts.GotExpectedErrorFmt, gotError, expectedErr)
 	}
 
 	if !Equal(expectedResult, gotResult, func(a string, b string) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -41,7 +37,7 @@ func TestMakeUniqueStringSlice_failed_wrong_suffix_1(t *testing.T) {
 
 	_, gotError := MakeUniqueStringSlice(testSlice, testSuffix)
 	if !errors.Is(gotError, expectedErr) {
-		t.Errorf(gotExpectedErrorFmt, gotError, expectedErr)
+		t.Errorf(consts.GotExpectedErrorFmt, gotError, expectedErr)
 	}
 }
 
@@ -57,7 +53,7 @@ func TestFindIndex_found(t *testing.T) {
 
 	gotResult := FindIndex(len(testSlice), testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -73,7 +69,7 @@ func TestFindIndex_not_found(t *testing.T) {
 
 	gotResult := FindIndex(len(testSlice), testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -89,7 +85,7 @@ func TestFindIndexGeneric_found(t *testing.T) {
 
 	gotResult := FindIndexGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -105,7 +101,7 @@ func TestFindIndexGeneric_not_found(t *testing.T) {
 
 	gotResult := FindIndexGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -124,7 +120,7 @@ func TestContainsGeneric(t *testing.T) {
 
 	gotResult := ContainsGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testPredicate = func(i int) bool {
@@ -135,7 +131,7 @@ func TestContainsGeneric(t *testing.T) {
 
 	gotResult = ContainsGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -154,7 +150,7 @@ func TestCountGeneric(t *testing.T) {
 
 	gotResult := CountGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testPredicate = func(i int) bool {
@@ -165,7 +161,7 @@ func TestCountGeneric(t *testing.T) {
 
 	gotResult = CountGeneric(testSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -190,7 +186,7 @@ func TestEqual(t *testing.T) {
 
 	gotResult := Equal(testASlice, testBSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testPredicate2 := func(a string, b int) bool {
@@ -199,29 +195,29 @@ func TestEqual(t *testing.T) {
 
 	gotResult = Equal(testDSlice, testESlice, testPredicate2)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	gotResult = Equal(testASlice, testASlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	// false cases
 	expectedResult = false
 	gotResult = Equal(testASlice, testCSlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	gotResult = Equal(testDSlice, testASlice, testPredicate2)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	gotResult = Equal(testASlice, testESlice, testPredicate)
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -240,7 +236,7 @@ func TestUniqueConfigurable(t *testing.T) {
 	if !Equal(gotResult, expectedResult, func(a, b float64) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	// unique (last occurrence)
@@ -250,7 +246,7 @@ func TestUniqueConfigurable(t *testing.T) {
 	if !Equal(gotResult, expectedResult, func(a, b float64) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -266,7 +262,7 @@ func TestFilter(t *testing.T) {
 	if !Equal(gotResult, expectedResult, func(a, b int) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testSliceString := []string{"hallo", "hello", "alo", "vera"}
@@ -278,7 +274,7 @@ func TestFilter(t *testing.T) {
 	gotResultString := Filter(testSliceString, testPredicateString)
 
 	if !Equal(gotResultString, expectedResultString, strings.EqualFold) {
-		t.Errorf(gotExpectedResultFmt, gotResultString, expectedResultString)
+		t.Errorf(consts.GotExpectedResultFmt, gotResultString, expectedResultString)
 	}
 }
 
@@ -296,7 +292,7 @@ func TestMap(t *testing.T) {
 	if !Equal(gotResult, expectedResult, func(a int, b int) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testSliceString := []string{"hallo", "hello", "alo", "vera"}
@@ -311,7 +307,7 @@ func TestMap(t *testing.T) {
 	if !Equal(gotResultString, expectedResultString, func(a int, b int) bool {
 		return a == b
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 }
 
@@ -325,7 +321,7 @@ func TestReduce(t *testing.T) {
 	gotResult := Reduce(testSlice, testReduceFunc, 0)
 
 	if gotResult != expectedResult {
-		t.Errorf(gotExpectedResultFmt, gotResult, expectedResult)
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
 	}
 
 	testSliceConcat := [][]int{{0, 1}, {2, 3}, {4, 5, 6}, {7, 8, 9, 10}}
@@ -340,7 +336,7 @@ func TestReduce(t *testing.T) {
 	if !Equal(gotResultConcat, expectedResultConcat, func(i int, i2 int) bool {
 		return i == i2
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResultConcat, expectedResultConcat)
+		t.Errorf(consts.GotExpectedResultFmt, gotResultConcat, expectedResultConcat)
 	}
 }
 
@@ -353,6 +349,6 @@ func TestConcatSlices(t *testing.T) {
 	if !Equal(gotResultConcat, expectedResultConcat, func(i int, i2 int) bool {
 		return i == i2
 	}) {
-		t.Errorf(gotExpectedResultFmt, gotResultConcat, expectedResultConcat)
+		t.Errorf(consts.GotExpectedResultFmt, gotResultConcat, expectedResultConcat)
 	}
 }
