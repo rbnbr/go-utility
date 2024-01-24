@@ -226,3 +226,45 @@ func ConcatSlices[T any](slice [][]T) []T {
 		return append(*aggregate, *newValue...)
 	}, []T{})
 }
+
+// Any
+// Returns true if any element of slice is true
+func Any(slice []bool) bool {
+	for _, v := range slice {
+		if v {
+			return true
+		}
+	}
+
+	return false
+}
+
+// All
+// Returns true if all elements of slice are true
+func All(slice []bool) bool {
+	for _, v := range slice {
+		if !v {
+			return false
+		}
+	}
+
+	return true
+}
+
+// GroupBy
+// Groups the elements of a slice to a map that maps their comparable identifier (got via the accessor function) to
+// a slice containing those elements
+func GroupBy[T comparable, V any](slice []V, accessor func(v V) T) map[T][]V {
+	ret := map[T][]V{}
+
+	for i := range slice {
+		k := accessor(slice[i])
+		if arr, ok := ret[k]; ok {
+			ret[k] = append(arr, slice[i])
+		} else {
+			ret[k] = []V{slice[i]}
+		}
+	}
+
+	return ret
+}

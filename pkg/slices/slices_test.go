@@ -3,6 +3,8 @@ package slices
 import (
 	"errors"
 	"github.com/rbnbr/go-utility/pkg/consts"
+	"github.com/rbnbr/go-utility/pkg/maps"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -350,5 +352,124 @@ func TestConcatSlices(t *testing.T) {
 		return i == i2
 	}) {
 		t.Errorf(consts.GotExpectedResultFmt, gotResultConcat, expectedResultConcat)
+	}
+}
+
+func TestAny(t *testing.T) {
+	testSlice := []bool{false, false, false, false}
+
+	expectedResult := false
+
+	gotResult := Any(testSlice)
+
+	if expectedResult != gotResult {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	testSlice2 := []bool{false, true, false, false}
+
+	expectedResult2 := true
+
+	gotResult2 := Any(testSlice2)
+
+	if expectedResult2 != gotResult2 {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult2, expectedResult2)
+	}
+}
+
+func TestAll(t *testing.T) {
+	testSlice := []bool{true, true, false, true}
+
+	expectedResult := false
+
+	gotResult := All(testSlice)
+
+	if expectedResult != gotResult {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	testSlice2 := []bool{true, true, true, true}
+
+	expectedResult2 := true
+
+	gotResult2 := All(testSlice2)
+
+	if expectedResult2 != gotResult2 {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult2, expectedResult2)
+	}
+}
+
+func TestGroupBy(t *testing.T) {
+	testSliceToGroup := []int{0, 1, 2, 3, 1, 2, 30, 1, -1, -2, -1, 3, 2, 7, -3, 19, 39, 10, 20}
+
+	expectedResult := map[int][]int{
+		0:  {0},
+		1:  {1, 1, 1},
+		2:  {2, 2, 2},
+		3:  {3, 3},
+		30: {30},
+		-1: {-1, -1},
+		-2: {-2},
+		7:  {7},
+		-3: {-3},
+		19: {19},
+		39: {39},
+		10: {10},
+		20: {20},
+	}
+
+	gotResult := GroupBy(testSliceToGroup, func(v int) int {
+		return v
+	})
+
+	gotResultKeys := maps.GetKeysOfMap(gotResult)
+	expectedResultKeys := maps.GetKeysOfMap(expectedResult)
+
+	sort.Ints(gotResultKeys)
+	sort.Ints(expectedResultKeys)
+
+	if !Equal(gotResultKeys, expectedResultKeys, func(i int, i2 int) bool {
+		return i == i2 && Equal(gotResult[i], expectedResult[i], func(i3 int, i4 int) bool {
+			return i3 == i4
+		})
+	}) {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
+	}
+
+	testSliceToGroup2 := []int{0, 1, 2, 3, 1, 2, 30, 1, -1, -2, -1, 3, 2, 7, -3, 19, 39, 10, 20}
+
+	expectedResult2 := map[int][]int{
+		0:  {0},
+		1:  {1, 1, 1},
+		2:  {2, 2, 2},
+		3:  {3, 3},
+		30: {30},
+		-1: {-1, -1},
+		-2: {-2},
+		7:  {7},
+		-3: {-3},
+		19: {19},
+		39: {39},
+		10: {10},
+		20: {20},
+		34: {34},
+	}
+
+	gotResult2 := GroupBy(testSliceToGroup2, func(v int) int {
+		return v
+	})
+
+	gotResultKeys2 := maps.GetKeysOfMap(gotResult2)
+	expectedResultKeys2 := maps.GetKeysOfMap(expectedResult2)
+
+	sort.Ints(gotResultKeys2)
+	sort.Ints(expectedResultKeys2)
+
+	if Equal(gotResultKeys2, expectedResultKeys2, func(i int, i2 int) bool {
+		return i == i2 && Equal(gotResult2[i], expectedResult2[i], func(i3 int, i4 int) bool {
+			return i3 == i4
+		})
+	}) {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult2, expectedResult2)
 	}
 }
