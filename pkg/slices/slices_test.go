@@ -313,6 +313,25 @@ func TestMap(t *testing.T) {
 	}
 }
 
+
+// TestMapI
+// Tests the generic MapI function.
+func TestMapI(t *testing.T) {
+	testSlice := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	testMapping := func(i *int, idx int) int {
+		return (*i) * 2 + idx
+	}
+
+	expectedResult := []int{0, 3, 6, 9, 12, 15, 18, 21, 24, 27}
+	gotResult := MapI(testSlice, testMapping)
+
+	if !Equal(gotResult, expectedResult, func(a int, b int) bool {
+		return a == b
+	}) {
+		t.Errorf(consts.GotExpectedResultFmt, gotResult, expectedResult)
+	}
+}
+
 func TestReduce(t *testing.T) {
 	testSlice := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	testReduceFunc := func(i *int, v *int) int {

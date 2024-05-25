@@ -204,6 +204,18 @@ func Map[T any, V any](slice []T, mapping func(t *T) V) []V {
 	return ret
 }
 
+// MapI
+// Same as Map but also passes an integer to the mapping function representing the current index.
+func MapI[T any, V any](slice []T, mapping func(t *T, i int) V) []V {
+	ret := make([]V, len(slice))
+
+	for i := 0; i < len(slice); i++ {
+		ret[i] = mapping(&slice[i], i)
+	}
+
+	return ret
+}
+
 // Reduce
 // My take on implementing the reduce function.
 // It iterates over the provided slice and combines and returns the result of this iteration.
